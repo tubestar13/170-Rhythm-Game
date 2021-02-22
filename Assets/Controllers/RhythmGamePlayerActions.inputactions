@@ -1,5 +1,5 @@
 {
-    "name": "Rhythm Game Prototype",
+    "name": "RhythmGamePlayerActions",
     "maps": [
         {
             "name": "Player",
@@ -30,9 +30,25 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Attack1",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "f1d4c1cc-d108-4563-a315-ed8ebbb3541d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HAttack",
+                    "type": "PassThrough",
+                    "id": "a557bb50-85b7-46aa-b395-607d17aba04f",
+                    "expectedControlType": "Double",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HRelease",
+                    "type": "Button",
+                    "id": "c10db37e-847e-4025-a34c-809a0fb0172e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -263,10 +279,32 @@
                     "name": "",
                     "id": "0ee9d749-b5bc-4d0f-8692-f484aa771ecc",
                     "path": "<Keyboard>/z",
-                    "interactions": "Hold",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Attack1",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4da349d-df15-4b19-aeb0-f79e00776eb7",
+                    "path": "<Keyboard>/z",
+                    "interactions": "Hold(duration=0.3)",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7abfb627-b3c8-4a9e-9f91-96760ae35a33",
+                    "path": "<Keyboard>/z",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HRelease",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -353,6 +391,14 @@
                     "type": "PassThrough",
                     "id": "7240d105-029d-4181-99dc-dded28d9fb6d",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "e8e935bc-968d-43ac-9af9-a42f8613f670",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -773,6 +819,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93e74a1d-21e5-48e3-bda7-84a8a51f7494",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

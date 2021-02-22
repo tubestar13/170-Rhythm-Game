@@ -1,26 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VibeCheck : MonoBehaviour
 {
+    FMODVibeTracker vt;
     public float bpm;
     public float secPerBeat;
     public float songPosition;
     public float songPosInBeats;
-    public float dspTimeSong;
+
+    enum SongState { STARTED, RUNNING, STOPPING };
+    SongState state;
 
     // Start is called before the first frame update
     void Start()
     {
-        bpm = 60f;
-        secPerBeat = 60f / bpm;
-
-        //record the start time
-        dspTimeSong = (float)AudioSettings.dspTime;
-
-        //play the song
-        GetComponent<AudioSource>().Play();
+        vt = GetComponent<FMODVibeTracker>();
+        state = SongState.STARTED;
     }
 
     public float checkVibes()
@@ -47,7 +45,24 @@ public class VibeCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        songPosition = (float)(AudioSettings.dspTime - dspTimeSong);
-        songPosInBeats = songPosition / secPerBeat;
+        //song position is in milliseconds
+        songPosition = vt.timelineInfo.position;
+        //divide by 1000 to get proper beat count
+        songPosInBeats = songPosition / secPerBeat / 1000;
+        bpm = vt.timelineInfo.tempo;
+        secPerBeat = 60f / bpm;
+
+        if(state == SongState.STARTED && songPosition > 0)
+        {
+            state = SongState.RUNNING;
+        }
+
+        if(state == SongState.RUNNING && songPosition == 0)
+        {
+            Debug.Log("Song Ended");
+            state = SongState.STOPPING;
+            SceneManager.LoadScene(2);
+        }
     }
+
 }
