@@ -3,34 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
-{
-    PlayerAction pa;
+public class PlayerController : MonoBehaviour {
 
-    // Start is called before the first frame update
-    void Start()
+    private RhythmGamePlayerActions controls;
+    private PlayerAction pa;
+    private bool charging;
+
+    private void Awake()
     {
-        pa = GetComponent<PlayerAction>();
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        var keyboard = Keyboard.current;
-        if (keyboard == null)
-            return; //no keyboard
+        controls = new RhythmGamePlayerActions();
+        controls.Enable();
+        
+    }
 
-        PlayerAction.combo = pa.CheckForDrop(PlayerAction.combo);
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
 
-        //Combo Combat
-        if (keyboard.zKey.wasPressedThisFrame)
-        {
-            PlayerAction.combo = pa.Punching(PlayerAction.combo);
-        }
+    private void Start()
+    {
+        pa = GetComponent<PlayerAction>();
+        controls.Player.Attack.performed += _ => Punch();
+        controls.Player.HAttack.performed += _ => Charging();
+        controls.Player.HRelease.performed += _ => Launch();
+    }
 
-        if (keyboard.zKey.wasReleasedThisFrame)
-        {
-            PlayerAction.combo = pa.HoldPunch(PlayerAction.combo);
-        }
+    private void Punch()
+    {
+        pa.Punching();
+    }
+
+    private void Charging()
+    {
+        Debug.Log("charging");
+        charging = true;
+    }
+    private void Launch()
+    {
+        if(charging)
+            pa.HoldPunch();
+        charging = false;
+
+    }
+
+    private void Update()
+    {
+        pa.CheckForDrop();
     }
 }

@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    VibeCheck vibes;
-    public AudioSource audioSource;
+    public VibeCheck vibes;
     public Animator animator;
     public Transform attackPoint;
+    public PlayerStats ps;
     public LayerMask enemyLayers;
     public float attackRange;
     int oldVibes;
     float vibing;
-    public static int combo;
+    private static int combo;
 
     // Start is called before the first frame update
     void Start()
     {
-        vibes = audioSource.GetComponent<VibeCheck>();
         oldVibes = -1;
         combo = 0;
     }
-    public int Punching(int combo)
+    public void Punching()
     {
         //keep track of time
         vibing = vibes.checkVibes();
@@ -34,30 +33,32 @@ public class PlayerAction : MonoBehaviour
                 case 0:
                     Debug.Log("punch 1\n" + vibing);
                     combo++;
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Whiff");
                     animator.SetInteger("Combo", combo);
-                    attackPoint.localPosition = new Vector2(0.31f, 0.05f);
+                    attackPoint.localPosition = new Vector2(0.45f, 0.45f);
                     hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
                     break;
                 case 1:
                     Debug.Log("Punch 2\n" + vibing);
                     combo++;
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Whiff");
                     animator.SetInteger("Combo", combo);
-                    attackPoint.localPosition = new Vector2(0.32f, 0.05f);
                     hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
                     break;
                 case 2:
                     Debug.Log("Punch 3 End of Combo\n" + vibing);
                     combo++;
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Whiff");
                     animator.SetInteger("Combo", combo);
-                    attackPoint.localPosition = new Vector2(0.5f, 0.05f);
                     hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
                     break;
                 default:
                     combo = 0;
                     Debug.Log("punch 1\n" + vibing);
                     combo++;
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Whiff");
                     animator.SetInteger("Combo", combo);
-                    attackPoint.localPosition = new Vector2(0.32f, 0.05f);
+                    attackPoint.localPosition = new Vector2(0.45f, 0.45f);
                     hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
                     break;
             }
@@ -66,22 +67,26 @@ public class PlayerAction : MonoBehaviour
             {
                 Debug.Log("Hit! " + enemy.name);
                 enemy.GetComponent<Enemy>().TakeDamage(34);
+                if(ps.currentHealth != ps.maxHealth)
+                {
+                    ps.currentHealth += 10;
+                    ps.healthBar.setHeatlh(ps.currentHealth);
+                }
             }
-            return combo;
+            return;
         }
         else
         {
             Debug.Log("You have failed the Vibe Check");
             combo = 0;
             animator.SetInteger("Combo", combo);
-            return combo;
+            return;
         }
     }
 
-    public int HoldPunch(int combo)
+    public void HoldPunch()
     {
-        if(vibes.songPosInBeats - oldVibes > 0.5f)
-        {
+        
             vibing = vibes.checkVibes();
             if(vibing > -1 && Mathf.Abs(vibes.songPosInBeats - oldVibes) > 0.2f)
             {
@@ -90,37 +95,38 @@ public class PlayerAction : MonoBehaviour
                     case 1:
                         Debug.Log("launcher End of Combo\n" + vibing);
                         combo = 0;
+                        animator.SetInteger("Combo", combo);
                         break;
                     default:
                         Debug.Log("not a combo\n" + vibing);
                         combo = 0;
+                        animator.SetInteger("Combo", combo);
                         break;
                 }
                 oldVibes = (int)vibing;
-                return combo;
+                return;
             }
             else
             {
                 Debug.Log("You have failed the Vibecheck");
                 combo = 0;
-                return combo;
+                animator.SetInteger("Combo", combo);
+                return;
             }
-        }
-        else 
-            return combo;
+        
     }
 
-    public int CheckForDrop(int combo)
+    public void CheckForDrop()
     {
-        if(vibes.songPosInBeats - oldVibes > 1f && combo != 0) //if the recorded beat is not n-1, reset combo
+        if(vibes.songPosInBeats - oldVibes > 1.2f && combo != 0) //if the recorded beat is not n-1, reset combo
         {
             Debug.Log("Dropped Combo");
             combo = 0;
             animator.SetInteger("Combo", combo);
-            return combo;
+            return;
         }
         else
-            return combo;
+            return;
     }
 
     private void OnDrawGizmos()
@@ -129,4 +135,5 @@ public class PlayerAction : MonoBehaviour
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
+
 }
