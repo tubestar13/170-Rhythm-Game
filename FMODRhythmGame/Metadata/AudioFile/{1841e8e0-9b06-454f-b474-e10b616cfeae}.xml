@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{1841e8e0-9b06-454f-b474-e10b616cfeae}">
+		<property name="assetPath">
+			<value>(音源) [SDVX] Akzeriyyuth [NOFX] - Trimmed.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>120.84244897959184</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{31e6328e-b130-4e61-9604-c38c0a9bbf48}</destination>
+		</relationship>
+	</object>
+</objects>
