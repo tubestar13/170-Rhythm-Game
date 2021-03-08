@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 487d30852325b9440a7aa66ea2df2396
   - enabled: 1
-    path: Assets/Scenes/Azkeriyyuth.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/V_Slice.unity
+    guid: ac4ba70e0846f05498f9046755d633b3
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: b0ea1668339b5504a89528369c9634e2

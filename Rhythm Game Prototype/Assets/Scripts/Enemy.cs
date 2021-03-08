@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     Vector3 startValue;
     Vector3 endValue;
 
-    enum EnemyState { MOVING, ATTACKING };
+    enum EnemyState { MOVING, ATTACKING, LAUNCHED };
     EnemyState state;
 
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
         startValue = this.transform.parent.transform.position;
         spawnOffset = (int)vibes.songPosInBeats + 6;
         divisionOffset = 6;
-        endValue = new Vector3(-3.2f, .8f, 0);
+        endValue = new Vector3(-3.6f, .8f, 0);
         state = EnemyState.MOVING;
 
     }
@@ -36,7 +36,18 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currHealth -= damage;
-        animator.SetTrigger("Hurt");
+
+        if(damage == 1)
+        {
+            animator.SetTrigger("Launch");
+            state = EnemyState.LAUNCHED;
+        }
+        else if(damage == 33)
+        {
+            animator.SetTrigger("Spiked");
+        }
+        else
+            animator.SetTrigger("Hurt");
 
         if (currHealth <= 0)
             StartCoroutine(Die());
@@ -45,7 +56,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Die()
     {
         GetComponent<Collider2D>().enabled = false;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.03f);
         Debug.Log("Enemy Died");
         this.transform.gameObject.SetActive(false);
         GetComponent<SpriteRenderer>().enabled = false;
@@ -62,7 +73,7 @@ public class Enemy : MonoBehaviour
     {
         Debug.Log("You missed");
         ps.currentHealth -= 10;
-        ps.healthBar.setHeatlh(ps.currentHealth);
+        ps.healthBar.setHealth(ps.currentHealth);
     }
 
     // Update is called once per frame
@@ -73,11 +84,20 @@ public class Enemy : MonoBehaviour
             LerpLeft();
 
         //Despawn if too late
-        if(spawnOffset + 0.2 < vibes.songPosInBeats && currHealth > 0 && state == EnemyState.MOVING)
+        if(spawnOffset + 0.2 < vibes.songPosInBeats && currHealth > 0)
         {
-            state = EnemyState.ATTACKING;
-            HurtPlayer();
-            StartCoroutine(Die());
+            if (state == EnemyState.MOVING)
+            {
+                state = EnemyState.ATTACKING;
+                HurtPlayer();
+                StartCoroutine(Die());
+            }
+
+            if (state == EnemyState.LAUNCHED)
+            {
+                spawnOffset+=1;
+                state = EnemyState.MOVING;
+            }
         }
         
     }
