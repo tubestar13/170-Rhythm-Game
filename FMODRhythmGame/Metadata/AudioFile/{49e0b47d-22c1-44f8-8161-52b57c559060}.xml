@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{49e0b47d-22c1-44f8-8161-52b57c559060}">
+		<property name="assetPath">
+			<value>03-03_17-02-05__180-0-bpm_Master.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>69.337062500000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{31e6328e-b130-4e61-9604-c38c0a9bbf48}</destination>
+		</relationship>
+	</object>
+</objects>

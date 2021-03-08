@@ -9,11 +9,6 @@ public class PlayerController : MonoBehaviour {
     private PlayerAction pa;
     private bool charging;
 
-    private void Awake()
-    {
-        
-    }
-
     private void OnEnable()
     {
         controls = new RhythmGamePlayerActions();
